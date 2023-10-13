@@ -15,7 +15,9 @@ const size = "/full/843,/0/default.jpg";
 
 async function loadArt({ query }: { query?: string }) {
   const res = await fetch(
-    `https://api.artic.edu/api/v1/artworks/search?q=${query}&limit=12&fields=id,title,image_id`
+    `https://api.artic.edu/api/v1/artworks/search?${
+      query ? `q=${query}&` : ""
+    }limit=12&fields=id,title,image_id`
   );
 
   const resJson: Response = await res.json();

@@ -1,7 +1,7 @@
 import Artworks from "../../../components/Artworks";
 import { Suspense } from "react";
 
-export default async function Artists({
+export default async function ArtworkTypes({
   params,
 }: {
   params: { slug: string };
