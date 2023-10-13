@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Artworks from "../components/Artworks";
 import { Suspense } from "react";
-import CommandBar from "@/providers/CommandBar";
 
 export default async function Home() {
   return (
@@ -13,7 +12,6 @@ export default async function Home() {
       <Suspense fallback={<div>Loading...</div>}>
         <Artworks />
       </Suspense>
-      <CommandBar />
     </>
   );
 }

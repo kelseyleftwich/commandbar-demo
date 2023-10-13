@@ -1,3 +1,4 @@
+import CommandBar from "@/providers/CommandBar";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -25,6 +26,7 @@ export default function RootLayout({
           {children}
         </main>
       </body>
+      <CommandBar />
     </html>
   );
 }
