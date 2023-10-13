@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "commandbar": "^1.8.7",
     "lodash": "^4.17.21",
     "next": "13.5.4",
     "react": "^18",
