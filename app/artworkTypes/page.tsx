@@ -1,6 +1,7 @@
+import Link from "next/link";
 const getArtworkTypes = async (): Promise<{ id: number; title: string }[]> => {
   const res = await fetch(
-    `https://api.artic.edu/api/v1/artwork-types?fields=title,id`
+    `https://api.artic.edu/api/v1/artwork-types?fields=title,id&limit=100`
   );
   const resJson = await res.json();
 
@@ -15,13 +16,13 @@ export default async function ArtworkTypes() {
       {artworkTypes
         .sort((a, b) => a.title.localeCompare(b.title))
         .map((type) => (
-          <a
+          <Link
             key={type.id}
             className="px-4 py-2 text-sm  text-white bg-rose-600 rounded-md shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
             href={`/artworkTypes/${type.id}`}
           >
             {type.title}
-          </a>
+          </Link>
         ))}
     </section>
   );

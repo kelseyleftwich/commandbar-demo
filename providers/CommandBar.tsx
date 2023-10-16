@@ -20,7 +20,7 @@ type Response = {
 
 const onSearchArtists = async (query: string) => {
   const res = await fetch(
-    `https://api.artic.edu/api/v1/artists/search?query[match][title]=${query}&fields=title,id`
+    `https://api.artic.edu/api/v1/artists/search?query[term][is_public_domain]=true&query[match][title]=${query}&fields=title,id`
   );
 
   const resJson: Response = await res.json();
@@ -31,7 +31,7 @@ const onSearchArtists = async (query: string) => {
 // API does not have search endpoint for artwork types so we query all and then sort
 const onSearchArtworkTypes = async (query: string) => {
   const res = await fetch(
-    `https://api.artic.edu/api/v1/artwork-types?fields=title,id`
+    `https://api.artic.edu/api/v1/artwork-types?query[term][is_public_domain]=true&fields=title,id&limit=100`
   );
 
   const resJson: Response = await res.json();

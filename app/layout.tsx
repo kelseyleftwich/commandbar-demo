@@ -21,8 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <main className="flex min-h-screen flex-col items-center  p-24 gap-4">
-          <Link href="/" className="text-4xl">
-            Home
+          <Link href="/" className="text-4xl text-rose-800">
+            Sample The Art Institute of Chicago's API
           </Link>
           <SearchBar />
 

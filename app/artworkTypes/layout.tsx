@@ -7,7 +7,7 @@ export default function ArtworkTypesLayout({
 }) {
   return (
     <>
-      <Link href="/artworkTypes" className="text-3xl">
+      <Link href="/artworkTypes" className="text-3xl text-rose-700">
         Artwork Types
       </Link>
 
