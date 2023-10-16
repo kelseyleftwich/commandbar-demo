@@ -24,7 +24,7 @@ const onSearchArtists = async (query: string) => {
   );
 
   const resJson: Response = await res.json();
-  console.log("data", resJson.data);
+
   return resJson.data;
 };
 
@@ -42,6 +42,11 @@ export default () => {
   const router = useRouter();
   useEffect(() => {
     window.CommandBar.boot("");
+
+    window.CommandBar.setFormFactor({
+      type: "inline",
+      rootElement: document.getElementById("commandbar-inline-root") ?? "",
+    });
 
     window.CommandBar.addRouter(router.push);
 

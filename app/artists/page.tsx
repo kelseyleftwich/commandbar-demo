@@ -1,3 +1,10 @@
+import Artworks from "@/components/Artworks";
+
 export default async function Artists() {
-  return <p>Cmd + K to search for an artist</p>;
+  return (
+    <>
+      <h4>Featured Artists</h4>
+      <Artworks display="artist" />
+    </>
+  );
 }

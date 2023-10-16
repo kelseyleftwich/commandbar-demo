@@ -1,25 +1,19 @@
 import _ from "lodash";
+import { Artwork as ArtworkType } from "./types";
+import Artwork from "./Artwork";
+
+type Config = {
+  iiif_url: string;
+};
 
 type SearchResponse = {
-  data: {
-    id: number;
-    title: string;
-    image_id: string;
-  }[];
-  config: {
-    iiif_url: string;
-  };
+  data: ArtworkType[];
+  config: Config;
 };
 
 type QueryResponse = {
-  data: {
-    id: number;
-    title: string;
-    image_id: string;
-  };
-  config: {
-    iiif_url: string;
-  };
+  data: ArtworkType;
+  config: Config;
 };
 
 const size = "/full/843,/0/default.jpg";
@@ -30,10 +24,13 @@ type Query = {
   artwork_type_id?: string;
 };
 
+const fields =
+  "id,title,image_id,artwork_type_id,artist_title,artwork_type_title,artist_id,artwork_type_id";
+
 async function loadArt(query?: Query) {
   if (query?.id) {
     const res = await fetch(
-      `https://api.artic.edu/api/v1/artworks/${query.id}?fields=id,title,image_id,artwork_type_id`
+      `https://api.artic.edu/api/v1/artworks/${query.id}?fields=${fields}`
     );
     const resJson: QueryResponse = await res.json();
     const iiifUrl = resJson.config.iiif_url;
@@ -55,13 +52,7 @@ async function loadArt(query?: Query) {
     urlToFetch += `query[term][artwork_type_id]=${query.artwork_type_id}&`;
   }
 
-  if (query?.artwork_type_id) {
-    urlToFetch += `query[term][id]=${query.artwork_type_id}&`;
-  }
-
-  const res = await fetch(
-    `${urlToFetch}limit=12&fields=id,title,image_id,artwork_type_id`
-  );
+  const res = await fetch(`${urlToFetch}limit=12&fields=${fields}`);
 
   const resJson: SearchResponse = await res.json();
 
@@ -77,42 +68,53 @@ async function loadArt(query?: Query) {
   });
 }
 
-export default async function Artworks({ query }: { query?: Query }) {
+export default async function Artworks({
+  query,
+  display,
+}: {
+  query?: Query;
+  display?: "artist" | "artworkType";
+}) {
   const artworks = await loadArt(query);
   const artworkGroups = _.chunk(artworks, 3);
 
   if (artworks.length === 1) {
     const art = artworks[0];
-    return (
-      <section className="grid grid-cols-1 gap-4 justify-items-center ">
-        <h1 className="text-3xl mb-4">{art.title}</h1>
-        <img
-          key={art.id}
-          src={art.imageUrl}
-          alt={art.title}
-          className="h-auto max-w-full rounded-lg"
-        />
-      </section>
-    );
+    return <Artwork art={art} />;
   }
 
   return (
-    <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {artworkGroups.map((artworkGroup, index) => (
-        <div key={index} className="grid gap-4">
-          {artworkGroup
-            .filter((artwork) => !!artwork.imageUrl)
-            .map((art) => (
-              <a href={`/${art.id}`} key={art.id}>
-                <img
-                  src={art.imageUrl}
-                  alt={art.title}
-                  className="h-auto max-w-full rounded-lg"
-                />
-              </a>
-            ))}
-        </div>
-      ))}
-    </section>
+    <>
+      {query?.artwork_type_id && (
+        <h1 className="text-3xl mb-1">{artworks[0].artwork_type_title}</h1>
+      )}
+      {query?.artist_id && (
+        <h1 className="text-3xl mb-1">{artworks[0].artist_title}</h1>
+      )}
+
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {artworkGroups.map((artworkGroup, index) => (
+          <div key={index} className="grid gap-4">
+            {artworkGroup
+              .filter((artwork) => !!artwork.imageUrl)
+              .map((art) => (
+                <a href={`/${art.id}`} key={art.id} className="relative">
+                  <img
+                    src={art.imageUrl}
+                    alt={art.title}
+                    className="h-auto max-w-full rounded-lg"
+                  />
+                  {!!display && (
+                    <div className="absolute top-0 left-0 right-0 p-2 bg-gray-800 bg-opacity-50 text-white">
+                      {display === "artist" && art.artist_title}
+                      {display === "artworkType" && art.artwork_type_title}
+                    </div>
+                  )}
+                </a>
+              ))}
+          </div>
+        ))}
+      </section>
+    </>
   );
 }
