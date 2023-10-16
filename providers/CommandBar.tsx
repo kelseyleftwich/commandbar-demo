@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { init } from "commandbar";
 import { useRouter } from "next/navigation";
 import sortObjectsByBestMatch from "@/utils/sortByBestMatch";
+import getFeaturedArtworks from "./getFeaturedArtworks";
+import getIcon from "./getIcon";
 
 if (typeof window !== "undefined") {
   init("5cc2a56d");
@@ -23,22 +25,27 @@ type ArtistResponse = {
     id: number;
     title: string;
     birth_date: number;
+    description: string;
   }[];
   config: {
     iiif_url: string;
   };
 };
 
-const getExtraHtml = (domain: string, channel: string) =>
+const truncateString = (str: string, length: number) => {
+  return str.length > 35 ? str.substring(0, length) + "..." : str;
+};
+
+const getExtraHtml = (description: string, chipText: string) =>
   `<div style="display: grid; grid-template-columns: auto auto; gap: 1rem; font-size: 13px; align-items: center; padding-bottom: 0.5rem;">
-  <div>${domain}</div>
+  <div>${truncateString(description, 96)}</div>
   <div style="
   border-radius: 4px;
   padding-left: 8px;
   padding-right: 8px;
   font-size: 10px;
   border: 1px solid rgb(189, 189, 189);
-  ">${channel}</div>
+  ">${chipText}</div>
   </div>
   `;
 
@@ -49,13 +56,11 @@ const onSearchArtists = async (query: string) => {
         title: query,
       },
     },
-    limit: 12,
-    fields: ["title", "id", "birth_date"],
   };
 
   const baseUrl = "https://api.artic.edu/api/v1/artists/search?";
   const formattedQuery = encodeURIComponent(JSON.stringify(elasticSearchQuery));
-  const urlToFetch = `${baseUrl}params=${formattedQuery}`;
+  const urlToFetch = `${baseUrl}params=${formattedQuery}&limit=12&fields=title,id,birth_date,description`;
 
   const res = await fetch(urlToFetch);
 
@@ -63,7 +68,10 @@ const onSearchArtists = async (query: string) => {
 
   return resJson.data.map((artist) => ({
     ...artist,
-    __extraHTML: getExtraHtml(artist.title, artist.birth_date.toString()),
+    __extraHTML: getExtraHtml(
+      artist.description || artist.title,
+      artist.birth_date.toString()
+    ),
   }));
 };
 
@@ -74,11 +82,13 @@ const onSearchArtworkTypes = async (query: string) => {
   );
 
   const resJson: Response = await res.json();
+
   return sortObjectsByBestMatch(resJson.data, "title", query);
 };
 
 export default () => {
   const router = useRouter();
+
   useEffect(() => {
     window.CommandBar.boot("");
 
@@ -98,6 +108,23 @@ export default () => {
       onInputChange: onSearchArtworkTypes,
       labelKey: "title",
       searchableFields: ["title"],
+    });
+
+    getFeaturedArtworks().then((records) => {
+      records.forEach((record) => {
+        const icon = getIcon(record.material_titles);
+        window.CommandBar.addCommand({
+          text: record.title,
+          name: `featured_artwork_${record.id}`,
+          icon,
+          template: {
+            type: "link",
+            value: `/${record.id}`,
+            operation: "self",
+          },
+          category: 14786,
+        });
+      });
     });
 
     return () => {
