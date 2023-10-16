@@ -1,3 +1,3 @@
 export default async function Artists() {
-  return <p>Select an artist</p>;
+  return <p>Cmd + K to search for an artist</p>;
 }

@@ -1,14 +1,10 @@
 import Artworks from "../../../components/Artworks";
 import { Suspense } from "react";
 
-export default async function ArtworkTypes({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function Artists({ params }: { params: { id: string } }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Artworks slug={params.slug} />
+      <Artworks query={{ artist_id: params.id }} />
     </Suspense>
   );
 }

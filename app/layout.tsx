@@ -23,6 +23,7 @@ export default function RootLayout({
           <Link href="/" className="text-4xl">
             Home
           </Link>
+
           {children}
         </main>
       </body>
