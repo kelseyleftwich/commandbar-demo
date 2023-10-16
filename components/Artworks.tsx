@@ -110,7 +110,15 @@ export default async function Artworks({
   const artworks = await loadArt(query);
 
   if (artworks.length === 0) {
-    return <p>No results 😔</p>;
+    return (
+      <div className="text-center">
+        <p className="font-medium text-lg">No results 😔</p>
+        <p>
+          Artworks may not be in the public domain and so are excluded from
+          search results
+        </p>
+      </div>
+    );
   }
 
   if (artworks.length === 1) {
