@@ -60,6 +60,11 @@ async function loadArt(query?: Query) {
               is_public_domain: true,
             },
           },
+          {
+            exists: {
+              field: "artist_title",
+            },
+          },
         ],
       },
     },
