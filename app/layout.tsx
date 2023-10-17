@@ -1,4 +1,4 @@
-import CommandBar from "@/providers/CommandBar";
+import CommandBar from "@/components/CommandBar";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";

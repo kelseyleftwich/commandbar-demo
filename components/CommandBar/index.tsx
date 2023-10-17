@@ -33,12 +33,12 @@ type ArtistResponse = {
 };
 
 const truncateString = (str: string, length: number) => {
-  return str.length > 35 ? str.substring(0, length) + "..." : str;
+  return str.length > length ? str.substring(0, length) + "..." : str;
 };
 
 const getExtraHtml = (description: string, chipText: string) =>
   `<div style="display: grid; grid-template-columns: auto auto; gap: 1rem; font-size: 13px; align-items: center; padding-bottom: 0.5rem;">
-  <div>${truncateString(description, 96)}</div>
+  <div>${truncateString(description, 64)}</div>
   <div style="
   border-radius: 4px;
   padding-left: 8px;
@@ -107,7 +107,6 @@ export default () => {
     window.CommandBar.addRecords("artworkTypes", [], {
       onInputChange: onSearchArtworkTypes,
       labelKey: "title",
-      searchableFields: ["title"],
     });
 
     getFeaturedArtworks().then((records) => {
