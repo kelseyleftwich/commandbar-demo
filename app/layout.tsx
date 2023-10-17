@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex min-h-screen flex-col items-center  p-24 gap-4">
-          <Link href="/" className="text-4xl text-rose-800">
-            Sample The Art Institute of Chicago's API
-          </Link>
+        <main className="flex min-h-screen flex-col items-center p-24 pt-0 gap-4">
+          <Header />
           <SearchBar />
 
           {children}

@@ -1,9 +1,21 @@
-import Link from "next/link";
-import { Artwork } from "./types";
+"use client";
 
-const Artwork = ({ art }: { art: Artwork & { imageUrl: string } }) => {
+import Link from "next/link";
+import { Artwork } from "../types";
+import { useEffect, useState } from "react";
+
+const Details = ({ art }: { art: Artwork & { imageUrl: string } }) => {
+  const [mode, setMode] = useState("default");
+  useEffect(() => {
+    setMode(localStorage.getItem("mode") || "default");
+  }, []);
+
+  if (mode === "distraction-free") {
+    return null;
+  }
+
   return (
-    <section className="grid grid-cols-1 gap-4 justify-items-center text-center ">
+    <>
       <h1 className="text-3xl mb-1">{art.title}</h1>
       {art.artist_id && (
         <Link
@@ -23,14 +35,8 @@ const Artwork = ({ art }: { art: Artwork & { imageUrl: string } }) => {
           <h2 className="text-2xl mb-4">{art.artwork_type_title}</h2>
         </Link>
       )}
-      <img
-        key={art.id}
-        src={art.imageUrl}
-        alt={art.title}
-        className="h-auto max-w-full rounded-lg"
-      />
-    </section>
+    </>
   );
 };
 
-export default Artwork;
+export default Details;

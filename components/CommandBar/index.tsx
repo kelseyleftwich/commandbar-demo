@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import sortObjectsByBestMatch from "@/utils/sortByBestMatch";
 import getFeaturedArtworks from "./getFeaturedArtworks";
 import getIcon from "./getIcon";
+import useDistractionFreeMode from "@/utils/useDistractionFreeMode";
 
 if (typeof window !== "undefined") {
   init("5cc2a56d");
@@ -130,6 +131,8 @@ export default () => {
       window.CommandBar.shutdown();
     };
   }, [router]);
+
+  useDistractionFreeMode();
 
   return null;
 };
