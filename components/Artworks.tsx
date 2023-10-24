@@ -154,6 +154,8 @@ export default async function Artworks({
                 src={art.imageUrl}
                 alt={art.title}
                 className="h-auto max-w-full rounded-lg"
+                width={500}
+                height={500}
               />
               {!!display && (
                 <div className="absolute top-0 left-0 right-0 p-2 bg-gray-800 bg-opacity-50 text-white">
