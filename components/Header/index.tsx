@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <>
       <Link href="/" className="text-4xl text-rose-800 mt-24">
-        Sample The Art Institute of Chicago's API
+        {"Sample The Art Institute of Chicago's API"}
       </Link>
     </>
   );
