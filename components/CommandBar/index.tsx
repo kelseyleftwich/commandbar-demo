@@ -7,8 +7,8 @@ import getFeaturedArtworks from "./getFeaturedArtworks";
 import getIcon from "./getIcon";
 import useDistractionFreeMode from "@/utils/useDistractionFreeMode";
 
-if (typeof window !== "undefined") {
-  init("5cc2a56d");
+if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_ORGANIZATION_ID) {
+  init(process.env.NEXT_PUBLIC_ORGANIZATION_ID);
 }
 
 type Response = {
@@ -91,6 +91,10 @@ export default () => {
   const router = useRouter();
 
   useEffect(() => {
+    if (!window.CommandBar) {
+      return;
+    }
+
     window.CommandBar.boot("");
 
     window.CommandBar.setFormFactor({
