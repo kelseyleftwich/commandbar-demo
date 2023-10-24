@@ -87,7 +87,7 @@ const onSearchArtworkTypes = async (query: string) => {
   return sortObjectsByBestMatch(resJson.data, "title", query);
 };
 
-export default () => {
+const CommandBar = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -140,3 +140,5 @@ export default () => {
 
   return null;
 };
+
+export default CommandBar;

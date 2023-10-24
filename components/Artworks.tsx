@@ -1,6 +1,7 @@
 import { Artwork as ArtworkType } from "./types";
 import Artwork from "./Artwork";
 import Link from "next/link";
+import Image from "next/image";
 
 type Config = {
   iiif_url: string;
@@ -149,7 +150,7 @@ export default async function Artworks({
           .filter((artwork) => !!artwork.imageUrl)
           .map((art) => (
             <Link href={`/${art.id}`} key={art.id} className="relative">
-              <img
+              <Image
                 src={art.imageUrl}
                 alt={art.title}
                 className="h-auto max-w-full rounded-lg"
